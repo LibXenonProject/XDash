@@ -1,7 +1,12 @@
-/* XDash is an interactive console-based program to manipulate the Xbox 360 
-\  While XDash is a text based menu system, it can do everything a GUI 
-\  Can do. XDash can set the front panel LED color, print a 
-\  live display of the hardware temperature, and shutdown the console.
+/* XDash is a graphical dashboard interface, based on the text-based
+\  dashboard system of the previous XDash. The aim is to create an
+\  "alternative dashboard" which is completely free and open source.
+\  Code execution, file browsing, and developer features are the core
+\  goals for this project.
+\
+\  Updated on 10-25-2012
+\  Please view the readme for details on the revitalization of this
+\  project.
 \
 \  XDash is still in early development but should be reletively bug free, if
 \  there is a bug in the code however, feel free to notify me at:
@@ -17,63 +22,39 @@
 // Include the respective include file
 #include "main.h"
 
-// Make available 100MB for thread stacks
-int stack_size = 0x6400000;
-
-// Void pointers for our thread stacks
-void *stack_1;
-void *stack_2;
-void *stack_3;
-
-// Thread integers
-int thread_1 = 1;
-int thread_2 = 2;
-int thread_3 = 3;
-
-// TODO: Clean this up: get rid of redundancy, comment.
-/*void getInput(){
-	struct controller_data_s controller;
-	while(1){XenosDevice *xe,
-		struct controller_data_s button;
- 		if (get_controller_data(&button, 0))
- 		{
-			if((button.start)&&(!controller.start))
-			{
-				clearScreen();
-				reDash();
-			}
-			if((button.x)&&(!controller.x))
-			{
-				printTemperatures();
-			}
-			if((button.y)&&(!controller.y))
-			{
-				clearScreen();
-			}
-			if((button.b)&&(!controller.b))
-			{
-				clearScreen();
-				shutdownConsole();
-			}											  
-			controller=button;
-		}
- 		usb_do_poll();
- 	}
-}*/
+/* I previously thought threading was an efficient way
+* of starting VL with the dashboard(). This seems to terribly
+* break everything, however, since dashboard() requires 
+* verificationLoader() to have been executed. May be why
+* I gave up on XDash earlier. Overcomplication is my worst
+* enemy.
+*
+* // Make available 100MB for thread stacks
+* int stack_size = 0x6400000;
+*
+* // Void pointers for our thread stacks
+* void *stack_1;
+* void *stack_2;
+* void *stack_3;
+*
+* // Thread integers
+* int thread_1 = 1;
+* int thread_2 = 2;
+* int thread_3 = 3;
+*
+*/
 
 int main(){
-	// Initialize stacks
-	stack_1 = malloc(sizeof(stack_size));
-	stack_2 = malloc(sizeof(stack_size));
+	// Execute the verificationLoader() function to load in
+	// all necessary system functionality, such as xenos, 
+	// console, input, etc.
+	verificationLoader();
 
-	// Initiate threads
-	xenon_thread_startup();
-
-	// Start a thread to run VL.
-	xenon_run_thread_task(thread_1, stack_1, verificationLoader());
-
-	// Start a thread to execute GUI.
-	// xenon_run_thread_task(thread_2, stack_2, dashboard());
+	// Run the dashboard on the condition that verificationLoader()
+	// has returned status 1.
+	if(verificationLoader == 1){
+		dashboard();
+	}
 
 	return 0;
 }

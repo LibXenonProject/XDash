@@ -12,6 +12,13 @@
    ability in the future.
 */
 
+/* TODO: Decide whether to use Xenos directly or use libPNG
+   For now this is unclear to me, so I will leave libPNG
+   included.
+
+  Using Xenos directly seems to be the better way.
+*/
+
 #include "dashboard.h"
 
 // Globals
@@ -44,6 +51,43 @@ void displayPNG(){
 	exit(-1);
 }
 
+void getInput(){
+	// Create a controller handler.
+	struct controller_data_s controller;
+
+	// Loop conditions for button actions.
+	while(1){
+
+		// Create a button handler.
+		struct controller_data_s button;
+
+ 		if (get_controller_data(&button, 0))
+ 		{
+			// Execute functions based on controller input.
+			if((button.start)&&(!controller.start))
+			{
+				clearScreen();
+				reDash();
+			}
+			if((button.x)&&(!controller.x))
+			{
+				printTemperatures();
+			}
+			if((button.y)&&(!controller.y))
+			{
+				clearScreen();
+			}
+			if((button.b)&&(!controller.b))
+			{
+				clearScreen();
+				shutdownConsole();
+			}											  
+			controller=button;
+		}
+ 		usb_do_poll();
+ 	}
+}
+
 void dashboard(){
 	// File name and FILE type for the main dashboard pngFile
 	char *fileName = "uda:/dashboard.png";
@@ -51,13 +95,23 @@ void dashboard(){
 	// Read the PNG file
 	checkPNGExists(fileName);
 
-	// If the PNG file exists, start the 
+	// If the PNG file exists, execute the input loop.
 	if(pngExists == true){
+		// Display dashboard image.
 		displayPNG();
-	} // If PNG does not exist, print errors
-	if(pngExists == false){
+		
+		// Run the getInput(); loop.
+		getInput();
+
+	}
+	// If PNG does not exist, print errors.
+	else if(pngExists == false){
+		// Print errors to the console.
 		PRINT_ERR("!! Unable to find PNG file on USB.\n");
 		PRINT_ERR("?? Check if file exists, and reboot.\n");
+
+		// Exit condition.
+		exit(-2);
 	}
 }
 
