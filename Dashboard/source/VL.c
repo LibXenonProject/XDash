@@ -19,18 +19,9 @@ void verificationLoader(){
 
 	// Start the text console
 	console_init();
-	if(console_is_initialized() != true){
-		xenon_smc_set_led(4, 2);
-		BP;
-	}
 
 	// Start Xenos
 	xenos_init(VIDEO_MODE_AUTO);
-	if(xenos_is_initialized() != true){
-		PRINT_ERR("!! Xenos initialization FAILED.\n");	
-		xenon_smc_set_led(4, 2);
-		BP;
-	}
 
 	// Start the network
 	network_init();

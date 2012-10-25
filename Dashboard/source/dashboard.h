@@ -11,4 +11,4 @@
 // Xenon includes
 #include <console/console.h>
 #include <xenos/xe.h>
-
+#include <input/input.h>

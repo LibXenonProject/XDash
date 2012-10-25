@@ -8,10 +8,10 @@
 
 #include "VL.h"
 
-// GPU structs and whatnot. Static type declared so they can be used in dashboard.c
-// when rendering the menu.
+/* GPU initialization struct. Static type, so dashboard.c 
+   can use it to do rendering later on.
+*/
 static struct XenosDevice *xe;
-// TODO: Add surface to be rendered (Image)
 
 void verificationLoader(){
 	// Wake up all CPU cores
@@ -19,10 +19,6 @@ void verificationLoader(){
 
 	// Start the text console
 	console_init();
-	if(console_is_initialized() != true){
-		xenon_smc_set_led(4, 2);
-		BP;
-	}
 
 	// Start Xenos
 	xenos_init(VIDEO_MODE_AUTO);
