@@ -11,5 +11,19 @@ As I test and verify these tools, they'll be incorporated one at a time into XDa
 
 For right now, this repository will only hold the old XDash code. Over the coming week I will start to re-design it from nearly the ground up, ans start importing utilities from my local repository.
 
-UNIX
 
+
+*******************************************************************************************************
+
+I stopped developing XDash many months ago, due to my homebrew console crapping out on me.
+This was my main project, and I really wanted to finish it. 
+
+Due to a few people forking this
+project from me on GitHub, I decided to resume work on the project, even without a homebrew
+console. I will be pushing commits to this project again, with some regularity depending on
+my real life work schedule.
+
+If anybody reading this is willing to test the code on their console, please, email me
+the results!
+
+My email is: tylerjkuck@gmail.com
