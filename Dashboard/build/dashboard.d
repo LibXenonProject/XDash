@@ -4,6 +4,8 @@ dashboard.o: /home/tyler/Desktop/XDash/Dashboard/source/dashboard.c \
  /usr/local/xenon/usr/include/png.h \
  /usr/local/xenon/usr/include/pnglibconf.h \
  /usr/local/xenon/usr/include/pngconf.h \
+ /usr/local/xenon/usr/include/pngconf.h \
+ /usr/local/xenon/usr/include/pnglibconf.h \
  /usr/local/xenon/usr/include/console/console.h \
  /usr/local/xenon/usr/include/xetypes.h \
  /usr/local/xenon/usr/include/xenos/xe.h \
@@ -20,6 +22,10 @@ dashboard.o: /home/tyler/Desktop/XDash/Dashboard/source/dashboard.c \
 /usr/local/xenon/usr/include/pnglibconf.h:
 
 /usr/local/xenon/usr/include/pngconf.h:
+
+/usr/local/xenon/usr/include/pngconf.h:
+
+/usr/local/xenon/usr/include/pnglibconf.h:
 
 /usr/local/xenon/usr/include/console/console.h:
 

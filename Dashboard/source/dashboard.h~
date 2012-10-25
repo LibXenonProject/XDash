@@ -7,8 +7,9 @@
 // Etc. includes
 #include <zlib.h>
 #include <png.h>
+#include <pngconf.h>
 
 // Xenon includes
 #include <console/console.h>
 #include <xenos/xe.h>
-
+#include <input/input.h>

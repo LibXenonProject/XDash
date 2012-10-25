@@ -21,24 +21,6 @@
 
 #include "dashboard.h"
 
-// Globals
-int pngExists = false;	// Used in dashboard() and checkPNGExists()
-// TODO: Add PNG image file specifications. Height, width, depth, etc, etc.
-
-// Check if PNG exists
-void checkPNGExists(char *file_name){
-	FILE *fp;
-
-	// If file is not found, return error 
-	if((fp = fopen(file_name, "rb")) == NULL){
-		printf("!! ERROR: Opening file\n");
-		exit(-1);
-	}
-	else{
-		pngExists = true;
-	}
-}
-
 // Display the PNG image from USB
 void displayPNG(){
 	/* Here we will interact with the already initialized 
@@ -47,9 +29,38 @@ void displayPNG(){
 	   Xenos using xe.h, we get to skip all of the init()
 	   stuff. All we have to do it tell Xenos what to do.
 	*/
-	printf("That's enough coding for tonight. :)\n");
-	exit(-1);
+	printf("Coming soon!\n");
+	exit(-6);
 }
+
+// Create the data structures for the Dashboard PNG file.
+// Taken from piko3d.com, adapted for standard C
+int setupPNG(char *filename){
+	// Validate the PNG file we are using is true.
+	if (!validate(filename)) {
+    		printf("!! Structure does not contain valid PNG data!");
+		exit(-3);
+	}
+
+	// Create a data structure for the PNG to be read into.
+	png_structp pngPtr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+	if (!pngPtr) {
+   		printf("!! Could not initialize PNG data structure!");
+    		exit(-4);
+	}
+
+	// Create a data structure for the PNG info to be read into.
+	// If this fails, clean up all PNG data and exit.
+	png_infop infoPtr = png_create_info_struct(pngPtr);
+	if (!infoPtr) {
+		printf("!! Could not initialize PNG data structure! Cleaning up...");
+    		png_destroy_read_struct(&pngPtr, (png_infopp)0, (png_infopp)0);
+    		exit(-5);
+	}
+
+	return 1;
+}
+
 
 void getInput(){
 	// Create a controller handler.
@@ -90,23 +101,22 @@ void getInput(){
 
 void dashboard(){
 	// File name and FILE type for the main dashboard pngFile
-	char *fileName = "uda:/dashboard.png";
+	char fileName = "uda:/dashboard.png";
 
-	// Read the PNG file
-	checkPNGExists(fileName);
+	// Validate and setup the PNG image in uda:/
+	setupPNG(fileName);
 
 	// If the PNG file exists, execute the input loop.
-	if(pngExists == true){
+	if(setupPNG == 1){
 		// Display dashboard image.
 		displayPNG();
 		
 		// Run the getInput(); loop.
 		getInput();
-
 	}
 
 	// If PNG does not exist, print errors.
-	else if(pngExists == false){
+	else if(setupPNG == NULL){
 		// Print errors to the console.
 		PRINT_ERR("!! Unable to find PNG file on USB.\n");
 		PRINT_ERR("?? Check if file exists, and reboot.\n");
