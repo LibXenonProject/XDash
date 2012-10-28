@@ -44,5 +44,8 @@ void verificationLoader(){
 	// Initialize the GPU and EDRAM
 	edram_init(xe);	
 	Xe_Init(xe);
+
+	// Initialize the background remote execution loop.
+	// startREAgent();
 }
 

@@ -175,7 +175,7 @@ Archive member included because of file (symbol)
 /usr/local/xenon/xenon/lib/32/libc.a(lib_a-malignr.o)
                               /usr/local/xenon/xenon/lib/32/libc.a(lib_a-malign.o) (_memalign_r)
 /usr/local/xenon/xenon/lib/32/libc.a(lib_a-malloc.o)
-                              /usr/local/xenon/usr/lib/libxenon.a(newlib.o) (malloc)
+                              RE.o (malloc)
 /usr/local/xenon/xenon/lib/32/libc.a(lib_a-mallocr.o)
                               /usr/local/xenon/xenon/lib/32/libc.a(lib_a-freer.o) (__malloc_av_)
 /usr/local/xenon/xenon/lib/32/libc.a(lib_a-memcmp.o)
@@ -339,6 +339,26 @@ Discarded input sections
  .text          0x0000000000000000        0x0 main.o
  .data          0x0000000000000000        0x0 main.o
  .bss           0x0000000000000000        0x0 main.o
+ .text          0x0000000000000000        0x0 RE.o
+ .data          0x0000000000000000        0x0 RE.o
+ .bss           0x0000000000000000        0x0 RE.o
+ .text.checkIsELF
+                0x0000000000000000       0x5c RE.o
+ .sdata.ELF_MAGIC
+                0x0000000000000000        0x4 RE.o
+ .sbss.isELF    0x0000000000000000        0x4 RE.o
+ .debug_info    0x0000000000000000       0xff RE.o
+ .debug_abbrev  0x0000000000000000       0x9c RE.o
+ .debug_loc     0x0000000000000000       0x74 RE.o
+ .debug_aranges
+                0x0000000000000000       0x20 RE.o
+ .debug_ranges  0x0000000000000000       0x10 RE.o
+ .debug_line    0x0000000000000000       0x7c RE.o
+ .debug_str     0x0000000000000000      0x127 RE.o
+ .comment       0x0000000000000000       0x12 RE.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 RE.o
+ .debug_frame   0x0000000000000000       0x34 RE.o
  .text          0x0000000000000000        0x0 VL.o
  .data          0x0000000000000000        0x0 VL.o
  .bss           0x0000000000000000        0x0 VL.o
@@ -1640,6 +1660,7 @@ LOAD /usr/local/xenon/lib/gcc/xenon/4.6.1/../../../../xenon/lib/../lib/crti.o
 LOAD /usr/local/xenon/lib/gcc/xenon/4.6.1/32/crtbegin.o
 LOAD dashboard.o
 LOAD main.o
+LOAD RE.o
 LOAD VL.o
 LOAD /usr/local/xenon/usr/lib/libxenon.a
 LOAD /usr/local/xenon/xenon/lib/32/libm.a
