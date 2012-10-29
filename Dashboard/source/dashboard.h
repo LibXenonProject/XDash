@@ -3,12 +3,8 @@
 // Standard C includes
 #include <stdio.h>
 #include <stdlib.h>
-
-// Etc. includes
-#include <zlib.h>
-#include <png.h>
-#include <pngconf.h>
-#include <pnglibconf.h>
+#include <stdint.h>
+#include <string.h>
 
 // Xenon includes
 #include <console/console.h>

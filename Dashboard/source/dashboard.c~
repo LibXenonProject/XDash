@@ -12,56 +12,36 @@
    ability in the future.
 */
 
-/* TODO: Decide whether to use Xenos directly or use libPNG
-   For now this is unclear to me, so I will leave libPNG
-   included.
-
-  Using Xenos directly seems to be the better way.
-*/
-
 #include "dashboard.h"
 
-// Display the PNG image from USB
-void displayPNG(){
-	/* Here we will interact with the already initialized 
-	   GPU, courtesy of VL. Since VL has already done the
-	   hard work for us, we can just directly interface
-	   Xenos using xe.h, we get to skip all of the init()
-	   stuff. All we have to do it tell Xenos what to do.
-	*/
-	printf("Coming soon!\n");
-	exit(-6);
+// Set an image as the default Xenos texture to render.
+// I have no idea if this even makes sense.
+void XeRenderImage(FILE *file){
+	// Create a data structure for the surface.
+	struct XenosSurface *Image;
+	struct XenosDevice *xe;
+
+	// Seek the size of the file.
+	fseek(file, 0, SEEK_END);
+	int size = ftell(file);
+	fseek(file, 0, SEEK_SET);
+
+	// Copy the image to memory.
+	void *imageAddress = malloc(size);
+	fread(imageAddress, 1, size, file);
+
+	// Copy the memory contents to surface data structure.
+	memcpy(Image, &imageAddress, size);
+
+	// Set the texture to render.
+	Xe_SetTexture(xe, XE_FMT_BGRA, Image);
+
+	// Render and resolve.
+	Xe_SetRenderTarget(xe, Image);
+	Xe_Resolve(xe);
 }
 
-// Create the data structures for the Dashboard PNG file.
-// Taken from piko3d.com, adapted for standard C
-int setupPNG(char *filename){
-	// Validate the PNG file we are using is true.
-	if (!validate(filename)) {
-    		printf("!! Structure does not contain valid PNG data!");
-		exit(-3);
-	}
-
-	// Create a data structure for the PNG to be read into.
-	png_structp pngPtr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-	if (!pngPtr) {
-   		printf("!! Could not initialize PNG data structure!");
-    		exit(-4);
-	}
-
-	// Create a data structure for the PNG info to be read into.
-	// If this fails, clean up all PNG data and exit.
-	png_infop infoPtr = png_create_info_struct(pngPtr);
-	if (!infoPtr) {
-		printf("!! Could not initialize PNG data structure! Cleaning up...");
-    		png_destroy_read_struct(&pngPtr, (png_infopp)0, (png_infopp)0);
-    		exit(-5);
-	}
-
-	return 1;
-}
-
-
+/*
 void getInput(){
 	// Create a controller handler.
 	struct controller_data_s controller;
@@ -98,31 +78,22 @@ void getInput(){
  		usb_do_poll();
  	}
 }
+*/
 
-void dashboard(){
-	// File name and FILE type for the main dashboard pngFile
-	char fileName = "uda:/dashboard.png";
+void dashboard(){	
+	// Setup a file type for the default dashboard file.
+	FILE *defaultImage;
+	char defaultImageName = "uda:/dashboard.bgra";		
 
-	// Validate and setup the PNG image in uda:/
-	setupPNG(fileName);
+	defaultImage = fopen(defaultImageName, "rb");
 
-	// If the PNG file exists, execute the input loop.
-	if(setupPNG == 1){
-		// Display dashboard image.
-		displayPNG();
-		
-		// Run the getInput(); loop.
-		getInput();
-	}
+	// Loop the display of the image and input handling.
+	while(1){
+		// Render the dashboard image.
+		XeRenderImage(defaultImage);
 
-	// If PNG does not exist, print errors.
-	else if(pngExists == NULL){
-		// Print errors to the console.
-		PRINT_ERR("!! Unable to find PNG file on USB.\n");
-		PRINT_ERR("?? Check if file exists, and reboot.\n");
-
-		// Exit condition.
-		exit(-2);
+		// Handle incoming controller input.
+		// getInput();
 	}
 }
 

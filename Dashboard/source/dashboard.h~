@@ -4,11 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Etc. includes
-#include <zlib.h>
-#include <png.h>
-#include <pngconf.h>
-
 // Xenon includes
 #include <console/console.h>
 #include <xenos/xe.h>
